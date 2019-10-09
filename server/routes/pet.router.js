@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../modules/pool');
+const { rejectUnauthenticated } = require('../modules/authentication-middleware');
+
 
 // This route *should* return the logged in users pets
-router.get('/', (req, res) => {
+router.get('/', rejectUnauthenticated, (req, res) => {
     console.log('/pet GET route');
     console.log('is authenticated?', req.isAuthenticated());
     console.log('user', req.user);
@@ -17,7 +19,7 @@ router.get('/', (req, res) => {
 });
 
 // This route *should* add a pet for the logged in user
-router.post('/', (req, res) => {
+router.post('/', rejectUnauthenticated, (req, res) => {
     console.log('/pet POST route');
     console.log(req.body);
     console.log('is authenticated?', req.isAuthenticated());
